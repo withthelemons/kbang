@@ -7,6 +7,7 @@ CONFIG += staticlib release
 #CONFIG += staticlib debug
 
 QT += xml
+greaterThan(QT_MAJOR_VERSION, 4): DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x000000
 INCLUDEPATH += src/common
 HEADERS += src/common/parser/ioproxy.h \
     src/common/parser/parser.h \

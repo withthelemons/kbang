@@ -3,6 +3,8 @@ UI_DIR = uics/server
 MOC_DIR = mocs/server
 OBJECTS_DIR = obj/server
 QT += network xml
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x000000
 
 CONFIG += release
 
