@@ -6,8 +6,7 @@ OBJECTS_DIR = obj/client
 CONFIG += qt
 CONFIG += release \
     warn_on
-QT += network \
-    xml
+QT += network xml multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 4): DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x000000
 RESOURCES += src/client/resources/client.qrc

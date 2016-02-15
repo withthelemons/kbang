@@ -30,6 +30,7 @@
 
 #include <QtDebug>
 #include <QBoxLayout>
+#include <QSound>
 
 using namespace client;
 
@@ -132,6 +133,7 @@ void Game::setGameContext(const GameContextData& gameContextData)
         PlayerWidget* causedBy = gameContextData.causedBy ? playerWidget(gameContextData.causedBy) : 0;
         QString causedByName = causedBy ? causedBy->name() : "";
         QString message;
+        QSound::play("sound/bell.wav");
         switch(gameContextData.reactionType) {
         case REACTION_BANG:
             message = tr("<i>%1</i> played Bang! on you!").arg(causedByName);
@@ -163,6 +165,7 @@ void Game::setGameContext(const GameContextData& gameContextData)
         setTextInfo(message);
     } else if (gamePlayState() == GAMEPLAYSTATE_DRAW) {
         setTextInfo(tr("It's your turn. Good luck!"));
+        QSound::play("sound/bell.wav");
     } else if (gamePlayState() == GAMEPLAYSTATE_DISCARD) {
         setTextInfo(tr("You need to discard some cards!"));
     } else{
