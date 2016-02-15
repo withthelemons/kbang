@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<article lang="en">
+  <articleinfo>
+    <title>KBang Protocol Specification</title>
+    <author>
+      <firstname>MacJariel</firstname>
+      <affiliation>
+        <address>
+          <email>echo "badmailet@gbalt.dob" | tr "edibmlt" "ecrmjil"</email>
+        </address>
+      </affiliation>
+    </author>
+  </articleinfo>
+  <abstract>
+    <para>This article is the specification of the KBang protocol, a network protocol used in the KBang game.</para>
+  </abstract>
+  <section>
+    <title>Introduction</title>
+    <para>
+    The KBang protocol is an open XML based protocol used in the KBang game. This protocol is still
+    in development and may change, although the basic features are ready.
+    </para>
+  </section>
+  <section>
+    <title>Architecture</title>
+    <section>
+      <title>Overview</title>
+      <para>The KBang architecture is quite simple. There is a KBang server that listens for
+        incomming TCP connections. Clients can connect to that server and communicate with it. Clients
+        only communicate with the server, they never communicate directly with another clients.</para>
+      <para>The following diagram provides an overview of this architecture.</para>
+      <programlisting>
+            C1
+            |
+        C2--S--C3
+            |
+            C4
+        </programlisting>
+      <para>The symbols are as follows:</para>
+      <itemizedlist>
+        <listitem>
+          <para>C1, C2, C3, C4 = KBang clients</para>
+        </listitem>
+        <listitem>
+          <para>S = KBang server</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section>
+      <title>Server</title>
+      <para>A server acts as an arbitor that serves and judges several KBang games. 
+        Most of the intelligence in KBang is concentrated to the server.
+      </para>
+    </section>
+    <section>
+      <title>Client</title>
+      <para>A client connects directly to the server over a TCP connection. Then it can
+        create a new bang game or join games either as a player or as an observer.
+        Clients only display the state of the game and send actions (mostly card movements).
+      </para>
+    </section>
+  </section>
+  <section>
+    <title>XML Streams</title>
+    <para>An XML stream is a container for the exchange of XML elements between the client and server.
+        The start of an XML stream is denoted unambiguously by an opening XML &lt;stream&gt; tag (with appropriate
+        attributes and namespace declarations), while the end of the XML stream is denoted unambiguously by a closing
+        XML &lt;/stream&gt; tag. During the life of the stream, the entity that initiated it can send an unbounded
+        number of XML elements over the stream. The "initial stream" is negotiated from the initiating entity (usually
+        a client) to the receiving entity (usually a server), and can be seen as corresponding to the initiating
+        entity's "session" with the receiving entity. The initial stream enables unidirectional communication from the
+        initiating entity to the receiving entity; in order to enable information exchange from the receiving entity
+        to the initiating entity, the receiving entity MUST negotiate a stream in the opposite direction
+        (the "response stream").</para>
+    <para>Consider the example of a client's session with a server. In order to connect to a server, a client
+      initiates an XML stream by sending an opening &lt;stream&gt; tag to the server.</para>
+			<programlisting><![CDATA[ 
+<?xml version='1.0'?>        
+<stream xmlns='kbang' version='1.0'>
+]]></programlisting>
+    <para>Server then responds by sending an opening &lt;stream&gt; tag and opens the response stream.</para>
+<programlisting><![CDATA[ 
+<?xml version='1.0'?>        
+<stream xmlns='kbang' version='1.0'>
+]]></programlisting>
+    <para>As soon as both streams are opened, both sides can send stanzas to each other.</para>
+  </section>
+  <section>
+    <title>Stanzas</title>
+    <para>Stanza is a group of XML elements that represents a command. In the XML structure it is formed by a subtree
+          that has its root element on level 2 (right under the root &lt;stream&gt; element).</para>
+    <para>Stanza can have an id. This id is used to pair a request with its response, thus is essential in query stanzas.
+          The id is a string of at most 16 alphanumeric characters and is passed as the id attribute in the root
+          stanza element.</para>
+    <para>There are several types of stanzas:</para>
+    <itemizedlist>
+      <listitem>
+        <para>query stanza. This type of stanza is used to get a specific information from the other side. Typically, clients
+          are sending queries, that are answered by server. The query stanza has three types: get, result and error. First one is
+          used to make a query, the others are used to respond to a query, either with a result or with an error. All query stanzas
+          must have a unique id (per client).</para>
+      </listitem>
+      <listitem>
+        <para>action stanza. The action stanza is used to post some actions that typically change the state of the other side. They
+              are sent only by clients, server never send action stanzas.</para>
+      </listitem>
+      <listitem>
+        <para>event stanzas</para>
+      </listitem>
+    </itemizedlist>
+ 
+  </section>
+  <section>
+    <title>Client states</title>
+    <para>As soon as the session between client and server is established, client is associated with a state. This
+    information is stored on server and it is server responsibility to change it. The state of a client represents
+    the place on server where client currently is and it determines which commands can client use. The client states
+    are:</para>
+    <itemizedlist>
+      <listitem>
+        <para>uninitialized - the client hasn't send the identification yet</para>
+      </listitem>
+      <listitem>
+        <para>unassociated - the client is not associated with a game</para>
+      </listitem>
+      <listitem>
+        <para>observing - the client is connected to a game as an observer</para>
+      </listitem>
+      <listitem>
+        <para>playing - the client is connected to a game as a player</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+	<section>
+		<title>Global client commands</title>
+		<para>
+			There are some commands that can be executed by client anytime during the session.
+		</para>
+		<section>
+			<title>Server details quering</title>
+			<para>
+				A client can query server for details such as the server name, etc.
+				Client can send this query:
+			</para>
+      <programlisting><![CDATA[ 
+<query type='get' id='1'>
+  <serverinfo />
+</query>
+]]></programlisting>
+      <para>
+				Server then responds:
+			</para>
+			<programlisting><![CDATA[ 
+<query type='result' id='1'>
+  <serverinfo name='Example server' description='Example description' />
+</query>
+]]></programlisting>
+		</section>			
+	</section>
+	<section>
+    <title>Uninitialized state</title>
+    <para>After client establishes the connection with server and both streams are open, client can
+          identify itself. This must be done before joining games, but can be useless if the client only
+          wants to query for games and then disconnect.</para>
+    <section>
+      <title>Setting identity</title>
+      <para>Right after a client establishes the stream connection with a server, it MUST 
+	    set its identity. This can be done by sending the following stanza:</para>
+      <programlisting><![CDATA[ 
+<action>
+  <set-identity alias="somealias" />
+</action>
+]]></programlisting>
+      <para>Alias MUST be unique within a server. If a client sends non-unique alias, error is returned:</para>
+      <programlisting><![CDATA[ 
+<iq type='error' id='2' />
+]]></programlisting>
+       <para>If the identity is successfully set, the server MUST send a result:</para>
+      <programlisting><![CDATA[ 
+<iq type='result' id='2' />
+]]></programlisting>
+      <para>Client can change its identity later, but this command MUST be used only when client is not connected to a game.</para>
+    </section>
+  </section>
+  <section>
+		<title>Unassociated state</title>
+		<para>A client is in the unassociated state if it is already identified (by setting identity) and is not
+			connected to a game. A client can get into this state from the <command>uninitialized</command> state or
+			from <command>observing</command> or <command>playing</command> state when leaving the game.</para>
+		<para>
+      Clients in this state can query server for list of games and/or create new games.
+		</para>
+    <section>
+      <title>Quering for games</title>
+      <para>To get the list of games client must send following command:</para>
+      <programlisting><![CDATA[ 
+<iq type='get' id='gamelisting_1'>
+  <query xmlns='kbang:iq:server:games' />
+</iq>
+]]></programlisting>
+      <para>
+        Server then responds with the list of games or with error (if the client is not in the right state).
+        The list of games may look like this:
+      </para>
+      <programlisting><![CDATA[ 
+<iq type='result' id='gamelisting_1'>
+  <query xmlns='kbang:iq:server:games'>
+    <game gid='1'
+          name='The Example Bang Game'
+          desc='The game description'
+          minplayers='5'
+          maxplayers='7'
+          maxobservers='10'
+          currentplayers='2'
+          currentobservers='0'
+          state='awaiting'
+          ruleset='bang'
+          playerpassword='0'
+          observerpassword='0'
+          />
+    <game gid='2'
+          name='The Example Bang Game #2'
+          desc='Another description'
+          minplayers='4'
+          maxplayers='7'
+          maxobservers='0'
+          currentplayers='5'
+          currentobservers='0'
+          state='running'
+          ruleset='bangexp1'
+          playerpassword='1'
+          observerpassword='0'
+          />
+  </query>
+</iq>
+]]></programlisting>
+    </section>
+    <section>
+      <title>Creating games</title>
+      <para>
+        A client that is in the unassociated state can create a new bang game. It can be done
+        with the following command.
+      </para>
+      <programlisting><![CDATA[ 
+<iq type='action' id='creategame_1'>
+  <creategame name='The Example Bang Game'
+              desc='The game description'
+              minplayers='5'
+              maxplayers='7'
+              maxobservers='10'
+              ruleset='bang'
+              playerpassword='SomePassword'
+              observerpassword=''
+              shuffleplayers='1'
+             />
+</iq>
+]]></programlisting>
+      <para>
+        The player that creates the game must sets these atributes:
+      </para>
+      <itemizedlist>
+        <listitem><para>
+            <code>name</code> - The name of the game. Should be short (&lt; 16 characters) string.
+        </para></listitem>
+        <listitem><para>
+            <code>desc</code> - The description of the game. Should be less than 128 characters.
+        </para></listitem>
+        <listitem><para>
+            <code>minplayers</code> - The minimum number of players, must be less or equal to <code>maxplayers</code>.
+        </para></listitem>
+        <listitem><para>
+            <code>maxplayers</code> - The maximum number of players, must be greater or equal to <code>minplayers</code>.
+        </para></listitem>
+        <listitem><para>
+            <code>maxobservers</code> - The maximum number of observers. If set to 0, observers are disabled.
+        </para></listitem>
+        <listitem><para>
+            <code>ruleset</code> - The ruleset for the game. See rulesets. [TODO - link]
+        </para></listitem>
+        <listitem><para>
+            <code>playerpassword</code> - The password for players. If empty string is set, the game is not protected by player password.
+        </para></listitem>
+        <listitem><para>
+            <code>observerpassword</code> - The password for observers. If empty string is set, the game is not protected by observer password.
+              Can be used only when player password is set.
+        </para></listitem>
+        <listitem><para>
+            <code>shuffleplayers</code> - If this flag is set to 1, the order of players is shuffled after starting the game. Otherwise the 
+            time of connecting to game is used for player order. (hint: server can implement a feature for the game creator to reorder players if
+            shuffleplayers is not set.
+        </para></listitem>
+        <listitem><para>
+            <code>joinas</code> - This parameter should be either <code>player</code> or <code>observer</code>.
+        </para></listitem>
+      </itemizedlist>
+      <para>
+        After the game is created, it gets into the game listing and clients can connect to the game. The creating player is automatically connected
+        to the game as a player or observer (depends on the joinas parameter). The game is in the <code>waitingForPlayers</code> state.
+      </para>
+      <para>
+        If everything goes well, the server responds with the result iq stanza (similar to that in game listing). Else an error stanza is send to client.
+      </para>
+    </section>
+    <section>
+      <title>Joining games</title>
+      <para>
+        A client that is in the unassociated state can join a new bang game. If joining the game as an observer, the only
+        need is that the game has less observers than <code>maxobservers</code> and client knows either the player or observer password
+        (if needed). If joining as a player, the game must have less players than <code>maxplayers</code>, client must know the player password
+        and the game must be in the <code>waitingForPlayers</code> state. There is one exception thouugh. Player can join a game not in the
+        <code>waitingForPlayers</code> state, but only to substitute an unattached player (i.e player without a client).
+      </para>
+      <para>
+        Suppose a client wants to join a game with <code>gid=123</code> as a player:
+      </para>
+      <programlisting><![CDATA[ 
+<iq type="action" id='joingame_1'>
+  <joingame gid="123"
+            role="player" />
+</iq>
+]]></programlisting>
+      <para>
+        If this game is protected by password the server responds with an error:
+      </para>
+      <programlisting><![CDATA[ 
+<iq type='error' id='joingame_1'>
+  <not-authorized />
+</iq>
+]]></programlisting>
+      <para>
+        In this case the client needs to send password to connect to this server. The client should know that the game was password-protected (from
+        the game listing) and should have used the following command in the first place:
+      </para>
+<programlisting><![CDATA[ 
+<iq type='action' id='joingame_2'>
+  <joingame gid="123"
+            role="player"
+            password="a_password" />
+</iq>
+]]></programlisting>
+      <para>
+        If the password is wrong, the same error as above is returned. If the game is not password-protected or the password is right, the server responds
+        with the following:
+      </para>
+<programlisting><![CDATA[ 
+<iq type='result' id='joingame_2'>
+  <joingame gid="123"
+            role="player"
+            playername="PlayerName" />
+</iq>
+]]></programlisting>
+      <para>
+        Note that there is no password in the result. The <code>password</code> field SHOULD be cut from the result. There is also an extra <code>playername</code> field.
+        Players can have different names than their clients (it's because client can disconnect and another client can connect instead of him, but the playername must
+        persist). Client SHOULD send the <code>playername</code> attribute in the <code>joingame</code>, but if he doesn't send the name, it's automatically set from the
+        client name.
+      </para>
+    </section>
+  </section>
+
+	<section>
+    <title>Playing state</title>
+    <para>
+      After the client creates/joins the game, he gets into the <code>playing state</code>. The client rights and obligations depend on the 
+      state of the game.
+    </para>
+    <section>
+      <title>Game states</title>
+      <para>
+        There are several game states.
+      </para>
+    </section>
+  </section>
+
+  <appendix>
+    <title>Use cases</title>
+    <para>These are some use cases to describe common situations in game.</para>
+    <section>
+      <title>Establishing connection</title>
+<programlisting><![CDATA[ 
+C:   <?xml version='1.0'?>        
+     <stream xmlns='kbang' version='1.0'>
+
+S:   <?xml version='1.0'?>        
+     <stream xmlns='kbang' version='1.0'>
+
+<!-- There is some communication here. If any side closes
+     the <stream/> tag, the other one should do it too.  -->
+
+S:   </stream>
+C:   </stream>
+]]></programlisting>
+    </section>
+    <section>
+      <title>Querying for games</title>
+      <para>Client needs to obtain the list of games on the server. The following stanza is used.</para>
+<programlisting><![CDATA[ 
+C:   <query type='get' id='abcd1234'> 
+       <gamelist/>
+     </query>
+     
+S:   <query type='result' id='abcd1234'> 
+       <gamelist>
+         <game id='1'
+               name='The Example Bang Game'
+               desc='The game description'
+               minplayers='5'
+               maxplayers='7'
+               maxobservers='10'
+               currentplayers='2'
+               currentobservers='0'
+               state='awaiting'
+               ruleset='bang'
+               playerpassword='0'
+               observerpassword='0'
+          />
+       </gamelist>
+     </query>
+]]></programlisting>
+     </section>
+     <section>
+       <title>Querying for game details</title>
+       <para>Users can demand detailed info about a game. It can be obtained with following stanza.</para>
+<programlisting><![CDATA[ 
+C:   <query type='get' id='abcd1234'> 
+       <game id='1' />
+     </query>
+     
+S:   <query type='result' id='abcd1234'> 
+       <gamelist>
+         <game id='1'
+               name='The Example Bang Game'
+               desc='The game description'
+               minplayers='5'
+               maxplayers='7'
+               maxobservers='10'
+               currentplayers='2'
+               currentobservers='0'
+               state='awaiting'
+               ruleset='bang'
+               playerpassword='0'
+               observerpassword='0'>
+         <players>
+           <player pid='1' name='Alice' cid='11'  />
+           <player pid='2' name='Bob' cid='3' />
+           <player pid='3' name="Charlie' cid='4' />
+         </players>
+         <observers>
+         </observers>
+       </gamelist>
+     </query>
+]]></programlisting>
+      <para>Values pid and cid represent player id and client id.</para>
+    </section>
+     <section>
+       <title>Querying for clients</title>
+       <para>Someone may become interested where all the folks are. The following
+             stanza is an example for getting a list of all clients and their locations
+             on server.</para>
+<programlisting><![CDATA[ 
+C:   <query type='get' id='abcd1234'> 
+       <clientlist />
+     </query>
+     
+S:   <query type='result' id='abcd1234'> 
+       <clientlist>
+         <client id='1' name='Alice' playing_game='3' />
+         <client id='2' name='Bob' observing_game='2' />
+         <client id='3' name='Charlie' />
+       </clientlist>
+     </query>
+]]></programlisting>
+    </section>
+  </appendix>
+
+</article>
+<!--
+Part 1: Handshaking and creating/joining the game
+
+The KBang communication is based on the client-server model. Clients could be
+players or observers and they connect to a KBang server. After some "handshaking"
+clients can query server for some server parameters like the name and description
+of the server or the list of created games. Clients can then create a new game or
+join to existing game. Any of these action can be disabled by server (ie. games can
+be created only by admins).
+
+Let's see this process in details. Client (C) initializes the tcp connection to
+specified port on the server (S). C sends the following XML:
+<stream>
+    [TODO]
+
+S responds with:
+<stream>
+    [TODO]
+
+In this state the communication is established and client is ready to query server for
+basic parameters:
+
+C:  
+    <serverquery id=123>
+        <get name="serverName" />
+    </serverquery>
+S:
+    <serverquery id=123>
+        <result name="serverName" value="Example server" />
+    </serverquery>
+
+C:
+    <serverquery id="124">
+        <get name="gameList" />
+    </serverquery>
+S:
+    <serverquery id=123>
+        <result name="serverName">
+            [TODO] // hry jsou identifikovane pomoci id:32bit unsigned integer
+        </result>
+    </serverquery>
+
+Client can query for these parameters anytime while connected to the server.
+
+After listing games, client can decide to join one of them or create a new one:
+C:
+    <serverquery id
+        join
+
+[EXAMPLE CREATE GAME]
+
+Client can create/join a game only if he is not in a game already (either as a player or as
+a observer).
+
+The player that creates the game gets some special rights. He sets the parameters
+of the games (minimal and maximal player count, used rulesets (expansion sets, etc.),
+some passwords (player password, observer password, see for password policy for details),
+[maybe something more ?] - what about a flag "Shuffle players" that will schuffle the players order
+after starting the game - without this, players will be ordered according to the time of joining the game,
+or maybe the game creator could reshufle them)
+and then the game is created. This game is listed in the
+ gameList result and is in the waitingForPlayers (maybe rename the state) state. Clients
+ can join this game by the join command (what is the syntax) as a player (can be observer as well).
+
+After joining the game players can chat with each other in the game [see chatting], but must wait for start of the game.
+During this time they can set some parameters like password (this is necessary for reconnecting) but they cannot pick
+roles, etc. This is possible after the game is started. (There is a reason for this: imagine if a client could pick characters
+imediatelly after he join the game. If he got "bad" characters to choose from, he could leave the game and join again and a new
+pair of characters would be generated for him. This is obviously kind of cheat. )
+The game in the waitingForPlayers can be either started or canceled. The game creator has the right to do that.
+(this can be done by administrator as well) One client can be joined to only one game so after joining the game
+he must leave to join another one.
+
+If the game is cancelled, client is informed by:
+    [TODO]
+
+Client can also join games that has already started, either as a observer (client can do this anytime, depending on the
+game configuration) or as a player (there must be a unattached player (i.e. player without a client) with a set password
+and client must know that password).
+
+
+Password policy:
+    Protecting games
+    games can be protected by two types of passwords - player password and observer password. If client wants to join the game
+    as a player, he needs to know the player password. If client wants to join the game as an observer, he needs to know either
+    the player password or the observer password. The game could be either fully unprotected or it can have only player password set
+    or both password could be set. It's impossible to set only observer password.
+
+
+    Protecting players
+    When a client becomes a player, he can set a password. Later, in case he disconnects for any reason, he can reconnect
+    to that game only if he knows that player password. This behavior can be altered by server settings. For instance server
+    can do some countdown after player disconnects and if the client does not reconnect in time, server would use AI.
+
+
+
+
+Getting information in game
+
+The commands in this section can be used by observers and players, so any client connected to a game can use this queries.
+Clients can query for global state of the game:
+    TODO: parameters - game name, game description, count of players, list of players, the number of current turn, the current player,
+    the player with the token
+    (players should be counted by id), number of cards on the pile, number of cards on the graveyard, top card on the graveyard
+    temporary card lists (after playing General Store) - they should be more of them and some should be private (the situation of
+    playing panic to some players hand should be modeled)
+
+    there should be an example for getting any of these stuff..
+    list of players (what would be the order - obviously the player id (int) would not represent the (usporadani) of the players
+
+
+    this construction should be sufficent to get any necessary information about game state that is not related to a concrete player.
+    (there should be a space for some extensions, like using expansion sets with extra decks)
+
+Clients can also query for some players related information. In this case a client must specify the target player by his id.
+    Querying for: player name, character card, number of lifes, max number of lifes, the number of cards in his hands, the list of cards on the
+    table in front of him, ... )
+
+
+Commands for players only:
+    querying own state:
+    Every player can query for his own state. He can query for the common public things using the query syntax described above and for
+    getting private things he need to use this syntax: ..todo..
+    He can query for: the role, list of cards in hands
+
+
+Recieving events in game:
+
+Although clients could be satisfied with just quering for state, there could emerge some problems with that. For this reason there are events.
+When something happens, server broadcasts the events about this and clients should update their own state of game. They should use quering for
+state from time to time or if they connect to an already started game. There are ? types of events:
+* public events
+These events are sent to any client connected to the game and represent any public action that is seen during the game. It contains:
+  
+  * player draws cards (the beginning of the turn)
+  * player draws card(s) for other reason  (prison/dynamite, effect of character,...)
+  * player plays any card (either by discarding it or by putting it on the table)
+  * player discard cards (from hand or from table - it could be either by his decision or for example after playing cat balow))
+  * player gives some cards to another player (mostly after playing panic)
+  * player gets the token (the player that has the token is the one that should do some action - it does not always mean, that
+    it is that players turn)
+
+
+* private events
+This kind of events apply only to players and it consists of the actions that only concrete player knows about. In the Bang
+game everybody knows that some action happens (someone take a card and put it somewhere else), but not always everyone know
+the details (only two players know what card has been taken from someone's hand by panic). When the events are broadcasted,
+some clients get only the public part (eg. count of cards drawn from the deck) and some of them get the private part as well
+(what cards they were).
+
+
+Commiting actions:
+There is a set of commands that are used to actualy play the game. The necessary thing to say is that these action commands can
+be used only by players that has the token. So in any state of the game there is just one player that is expected to send an action command.
+
+These commands are:
+    * drawing cards
+    * playing cards
+    * choosing cards from a list
+
+
+
+
+
+
+
+
+Pretending actions:
+    every action can be pretended in sense that the game tells you if that is or is not possible.. for example you can say:
+        player 1 plays bang on player 2
+        and the server will respond if that would be possible
+
+-->

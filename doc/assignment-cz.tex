@@ -1,0 +1,44 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{czech}
+\usepackage[utf8x]{inputenc}
+%\usepackage{hyperref}
+
+\usepackage{hyperref}
+
+\parindent=0in
+
+\title{KBang -- zadání}
+\author{Michal Čevora}
+\date{14. 3. 2008}
+
+\begin{document}
+
+\maketitle
+
+\section*{Obecné informace}
+
+\textbf{KBang} je (bude) síťová implementace karetní hry Bang. Hra Bang je karetní hra pro 4 až 7 hráčů. Každému hráči
+je na začátku hry přiřazena jedna z rolí \textit{šerif}, \textit{renegád}, \textit{bandita} a \textit{pomocník}. Tyto role
+jsou rozdány anonymně, tedy hráči navzájem neznají své role. Výjimku tvoří \textit{šerif}, jehož role je veřejná.
+
+Každý hráč má dle své role stanoven cíl:
+\begin{itemize}
+\item \textit{Šerif} musí zabít všechny bandity a renegáda.
+\item \textit{Bandité} musí zabít šerifa.
+\item \textit{Pomocníci} pomáhají šerifovi.
+\item \textit{Renegád} musí zabít všechny ostatní hráče a šerifa jako posledního.
+\end{itemize}
+
+Podrobnější pravidla najdete na \url{http://en.wikipedia.org/wiki/Bang!}.
+
+\section*{Detaily}
+Aplikace bude napsaná v jazyku \texttt{C++} s využitím knihovny \texttt{Qt 4} (a možná i \texttt{kdelibs}. Aplikace bude rozdělená na
+dva subprojekty - klient a server. Tyto dvě komponenty budou spolu komunikovat za pomocí XML proudů, použitých např. v protokolu XMPP.
+
+Serverová část nebude obsahovat umělou inteligenci, ačkoli toto by mohl být prostor pro rozšíření na bakalářskou práci.
+
+Projekt je vyvíjen pod svobodnou licencí GNU/GPL a je hostován na serveru Sourceforge.net pod unixovým názvem kbang.
+
+
+\end{document}
+

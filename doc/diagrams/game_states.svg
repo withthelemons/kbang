@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="26cm" height="14cm" viewBox="14 10 26 14">
+  <rect style="fill: #ffffff" x="19.35" y="10.05" width="6.7" height="2.1"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x="19.35" y="10.05" width="6.7" height="2.1"/>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="22.7" y="11.175">WaitingForPlayers</text>
+  <line style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x1="14.75" y1="11.1" x2="18.4179" y2="11.1433"/>
+  <polygon style="fill: #000000" points="18.7929,11.1477 18.29,11.3918 18.4179,11.1433 18.2959,10.8918 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="18.7929,11.1477 18.29,11.3918 18.4179,11.1433 18.2959,10.8918 "/>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="16.5273" y="10.9245">The game</text>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="16.5273" y="11.7245">is created</text>
+  <rect style="fill: #ffffff" x="33.15" y="10.1" width="6.8" height="1.9"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x="33.15" y="10.1" width="6.8" height="1.9"/>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="36.55" y="11.125">GameInitialization</text>
+  <line style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x1="26.35" y1="11.15" x2="32.3632" y2="11.1037"/>
+  <polygon style="fill: #000000" points="32.7382,11.1009 32.2401,11.3547 32.3632,11.1037 32.2363,10.8547 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="32.7382,11.1009 32.2401,11.3547 32.3632,11.1037 32.2363,10.8547 "/>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="29.2" y="10.9662">Initiating player</text>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="29.2" y="11.7662">starts the game</text>
+  <line style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x1="36.6501" y1="12.45" x2="36.6093" y2="14.6133"/>
+  <polygon style="fill: #000000" points="36.6022,14.9882 36.3617,14.4836 36.6093,14.6133 36.8616,14.493 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="36.6022,14.9882 36.3617,14.4836 36.6093,14.6133 36.8616,14.493 "/>
+  <rect style="fill: #ffffff" x="33.0001" y="15.55" width="7" height="1.9"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x="33.0001" y="15.55" width="7" height="1.9"/>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="36.5001" y="16.5663">GameTurn</text>
+  <path style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" d="M 34.2001,17.8339 A 2.32987,2.32987 0 0 0 38.7301,18.095"/>
+  <polygon style="fill: #000000" points="38.6414,17.7379 39.0582,18.1103 38.7797,18.0864 38.5935,18.2948 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="38.6414,17.7379 39.0582,18.1103 38.7797,18.0864 38.5935,18.2948 "/>
+  <rect style="fill: #ffffff" x="19.9001" y="15.3839" width="8" height="2.15"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x="19.9001" y="15.3839" width="8" height="2.15"/>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="23.9001" y="16.5339">PlayerReaction</text>
+  <path style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" d="M 32.7001,15.6339 A 4.9689,4.9689 0 0 0 28.7915,15.5329"/>
+  <polygon style="fill: #000000" points="28.4495,15.6827 28.7792,15.2313 28.7827,15.5108 29.0084,15.6757 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="28.4495,15.6827 28.7792,15.2313 28.7827,15.5108 29.0084,15.6757 "/>
+  <path style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" d="M 28.4001,17.6839 A 3.63702,3.63702 0 0 0 32.1355,17.9328"/>
+  <polygon style="fill: #000000" points="32.4583,17.7477 32.1903,18.2383 32.1503,17.9617 31.905,17.8277 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="32.4583,17.7477 32.1903,18.2383 32.1503,17.9617 31.905,17.8277 "/>
+  <path style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" d="M 19.9001,15.3839 A 1.76169,1.76169 0 1 0 19.5634,17.8669"/>
+  <polygon style="fill: #000000" points="19.8319,17.6225 19.7248,18.1712 19.603,17.9196 19.3287,17.8661 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="19.8319,17.6225 19.7248,18.1712 19.603,17.9196 19.3287,17.8661 "/>
+  <rect style="fill: #ffffff" x="25.8501" y="21.7839" width="7.55" height="1.7"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x="25.8501" y="21.7839" width="7.55" height="1.7"/>
+  <text style="fill: #000000; text-anchor:middle; font-size: 0.8; font-family: sans; font-style: normal; font-weight: normal" x="29.6251" y="22.7089">GameOver</text>
+  <line style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x1="33.7001" y1="17.7339" x2="30.5773" y2="21.1735"/>
+  <polygon style="fill: #000000" points="30.3253,21.4512 30.4763,20.9129 30.5773,21.1735 30.8464,21.249 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="30.3253,21.4512 30.4763,20.9129 30.5773,21.1735 30.8464,21.249 "/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" x1="23.8001" y1="17.8339" x2="28.4032" y2="21.1021"/>
+  <polygon style="fill: #000000" points="28.7089,21.3192 28.1565,21.2336 28.4032,21.1021 28.446,20.8259 "/>
+  <polygon style="fill: none; fill-opacity:0; stroke-width: 0.1; stroke: #000000" points="28.7089,21.3192 28.1565,21.2336 28.4032,21.1021 28.446,20.8259 "/>
+</svg>
