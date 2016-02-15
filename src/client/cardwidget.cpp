@@ -31,13 +31,9 @@
 using namespace client;
 
 
-//const QSize CardWidget::sm_qsizeSmall(48, 78 );
-//const QSize CardWidget::sm_qsizeSmall(50, 80);
 const QSize CardWidget::sm_qsizeSmall(48, 75);
-//const QSize CardWidget::sm_qsizeSmall(55, 85);
-const QSize CardWidget::sm_qsizeNormal(65, 100);
-//const QSize CardWidget::sm_qsizeNormal(80, 124);
-const QSize CardWidget::sm_qsizeBig(200, 310);
+const QSize CardWidget::sm_qsizeNormal(100, 155);
+const QSize CardWidget::sm_qsizeBig(300, 465);
 
 int CardWidget::sm_lifeLevels[6] = {0, 19, 31, 44, 57, 68};
 //int CardWidget::sm_lifeLevels[6] = {0, 21, 34, 49, 64, 77};
