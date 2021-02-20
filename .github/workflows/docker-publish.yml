@@ -21,4 +21,4 @@ jobs:
       run: docker build . --file Dockerfile --tag lukynmatuska/kbang:$(date +%s)
       
     - name: Docker Push
-      run: docker push lukynmatuska/kbang
+      run: docker push lukynmatuska/kbang:$(date +%s)
