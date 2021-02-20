@@ -22,6 +22,7 @@
 #include "card.h"
 #include "config.h"
 
+#include <QPainterPath>
 #include <QPainter>
 #include <QFont>
 
